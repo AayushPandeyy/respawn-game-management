@@ -27,10 +27,17 @@ export async function generateMetadata({
 }
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ reviewsPage?: string }>;
 }) {
   const { id } = await params;
+  const query = await searchParams;
+  const reviewPage = Math.max(
+    1,
+    Math.min(5000, Number.parseInt(query.reviewsPage || "1") || 1),
+  );
   if (!validId(id)) notFound();
   const [game, user] = await Promise.all([
     gameDetails(Number(id)),
@@ -57,7 +64,12 @@ export default async function Page({
         initialEntry={entry}
         libraryError={libraryError}
       />
-      <GameCommunity gameId={game.id} userId={user?.id} />
+      <GameCommunity
+        gameId={game.id}
+        gameName={game.name}
+        userId={user?.id}
+        page={reviewPage}
+      />
     </>
   );
 }

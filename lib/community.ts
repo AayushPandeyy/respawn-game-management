@@ -74,3 +74,16 @@ export async function lists(userId: string) {
   check(error);
   return (data || []) as GameList[];
 }
+export async function gameReviews(gameId: number, page = 1) {
+  const c = await communityClient();
+  const offset = (Math.max(1, Math.floor(page)) - 1) * 20;
+  const { data, error, count } = await c
+    .from("public_reviews")
+    .select("*,profiles(*)", { count: "exact" })
+    .eq("game_id", gameId)
+    .order("updated_at", { ascending: false })
+    .order("user_id")
+    .range(offset, offset + 19);
+  check(error);
+  return { items: (data || []) as Review[], total: count || 0 };
+}

@@ -217,6 +217,9 @@ export default function GamePage({
               <Copy size={16} />
               {copied ? "Link copied" : "Share game"}
             </button>
+            <a className="secondary" href="#community-reviews">
+              Read public reviews ↓
+            </a>
           </div>
         </div>
       </section>

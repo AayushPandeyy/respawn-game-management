@@ -173,9 +173,6 @@ export default function Dashboard({
             <Link className="nav-item" href="/diary">
               Gaming diary
             </Link>
-            <Link className="nav-item" href="/import/steam">
-              Steam import
-            </Link>
             <Link className="nav-item" href="/feed">
               Activity feed
             </Link>
@@ -371,7 +368,6 @@ export default function Dashboard({
           <Link href="/feed">Activity</Link>
           <Link href="/diary">Diary</Link>
           <Link href="/players">Players</Link>
-          <Link href="/import/steam">Steam import</Link>
           <Link href="/profile">Profile</Link>
           <Link href="/reviews">Reviews</Link>
           <Link href="/lists">Lists</Link>

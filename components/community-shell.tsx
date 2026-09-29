@@ -20,7 +20,6 @@ export default function CommunityShell({
           <Link href="/feed">Activity</Link>
           <Link href="/diary">Diary</Link>
           <Link href="/players">Players</Link>
-          <Link href="/import/steam">Steam import</Link>
           <Link href="/reviews">Reviews</Link>
           <Link href="/lists">Lists</Link>
           <Link href="/stats">Statistics</Link>

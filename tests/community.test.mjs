@@ -5,6 +5,70 @@ import { PGlite } from "@electric-sql/pglite";
 import { stripTypeScriptTypes } from "node:module";
 import vm from "node:vm";
 
+test("Game reviews query only the requested game, include all authors and paginate", async () => {
+  const calls = [];
+  let failed = false;
+  const chain = new Proxy(
+    {},
+    {
+      get: (_, method) =>
+        method === "then"
+          ? (resolve) =>
+              resolve({
+                data: [{ game_id: 42, user_id: "another-player" }],
+                count: 25,
+                error: failed ? { code: "unavailable" } : null,
+              })
+          : (...args) => {
+              calls.push([method, ...args]);
+              return chain;
+            },
+    },
+  );
+  const deps = {
+    "server-only": {},
+    "./supabase/server": {
+      createClient: async () => ({
+        from: (table) => {
+          calls.push(["from", table]);
+          return chain;
+        },
+      }),
+    },
+  };
+  const context = vm.createContext({});
+  const module = new vm.SourceTextModule(
+    stripTypeScriptTypes(
+      await readFile(new URL("../lib/community.ts", import.meta.url), "utf8"),
+    ),
+    { context },
+  );
+  await module.link(
+    (name) =>
+      new vm.SyntheticModule(
+        Object.keys(deps[name]),
+        function () {
+          for (const [key, value] of Object.entries(deps[name]))
+            this.setExport(key, value);
+        },
+        { context },
+      ),
+  );
+  await module.evaluate();
+  const result = await module.namespace.gameReviews(42, 2);
+  assert.equal(result.total, 25);
+  assert.equal(result.items[0].user_id, "another-player");
+  assert.ok(calls.some((c) => c[0] === "from" && c[1] === "public_reviews"));
+  assert.deepEqual(
+    calls.filter((c) => c[0] === "eq").map((c) => c.slice(1)),
+    [["game_id", 42]],
+  );
+  assert.ok(calls.some((c) => c[0] === "range" && c[1] === 20 && c[2] === 39));
+  assert.ok(calls.some((c) => c[0] === "select" && c[2].count === "exact"));
+  failed = true;
+  await assert.rejects(module.namespace.gameReviews(42), /Could not access/);
+});
+
 test("Community API verifies identity, validates input and scopes mutations", async () => {
   let user = { id: "verified-owner" },
     calls = [],

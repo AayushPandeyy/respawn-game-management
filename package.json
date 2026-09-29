@@ -11,7 +11,8 @@
     "test:library": "node --experimental-vm-modules --test tests/library.test.mjs",
     "test:community": "node --experimental-vm-modules --test tests/community.test.mjs",
     "test:follows": "node --experimental-vm-modules --test tests/follows.test.mjs",
-    "test:steam": "node --experimental-vm-modules --test tests/steam.test.mjs"
+    "test:steam": "node --experimental-vm-modules --test tests/steam.test.mjs",
+    "test:diary": "node --experimental-vm-modules --test tests/diary.test.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

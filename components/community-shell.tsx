@@ -18,6 +18,7 @@ export default function CommunityShell({
         <nav aria-label="Community navigation">
           <Link href="/">Discover</Link>
           <Link href="/feed">Activity</Link>
+          <Link href="/diary">Diary</Link>
           <Link href="/players">Players</Link>
           <Link href="/import/steam">Steam import</Link>
           <Link href="/reviews">Reviews</Link>

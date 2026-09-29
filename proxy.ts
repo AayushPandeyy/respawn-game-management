@@ -46,6 +46,8 @@ export const config = {
     "/api/follows",
     "/feed",
     "/players",
+    "/diary",
+    "/api/diary",
     "/import/steam",
     "/api/steam",
   ],

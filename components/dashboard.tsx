@@ -170,6 +170,9 @@ export default function Dashboard({
         <div className="sidebar-inner">
           <span className="nav-label">YOUR CORNER OF THE GAME WORLD</span>
           <nav>
+            <Link className="nav-item" href="/diary">
+              Gaming diary
+            </Link>
             <Link className="nav-item" href="/import/steam">
               Steam import
             </Link>
@@ -366,6 +369,7 @@ export default function Dashboard({
         </header>
         <nav className="community-mobile-links" aria-label="Community">
           <Link href="/feed">Activity</Link>
+          <Link href="/diary">Diary</Link>
           <Link href="/players">Players</Link>
           <Link href="/import/steam">Steam import</Link>
           <Link href="/profile">Profile</Link>

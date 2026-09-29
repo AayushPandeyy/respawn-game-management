@@ -3,10 +3,23 @@ import Link from "next/link";
 import { currentUser } from "@/lib/auth";
 import { getEntries } from "@/lib/library";
 import Shell, { DataError } from "@/components/community-shell";
+import DiaryStats from "@/components/diary-stats";
 export const dynamic = "force-dynamic";
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ year?: string }>;
+}) {
   const user = await currentUser();
   if (!user) redirect("/login");
+  const params = await searchParams;
+  const year = Math.max(
+    1970,
+    Math.min(
+      2100,
+      Number.parseInt(params.year || "") || new Date().getUTCFullYear(),
+    ),
+  );
   let content;
   try {
     const entries = await getEntries(user.id);
@@ -139,6 +152,7 @@ export default async function Page() {
       description="A private snapshot of your library, your taste, and the stories you’ve finished."
     >
       {content}
+      <DiaryStats year={year} />
     </Shell>
   );
 }

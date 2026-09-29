@@ -38,6 +38,12 @@ Restart after changing environment values. Rebuild production when NEXT_PUBLIC v
 
 ## Connected features
 
+### Private gaming diary
+
+Run `supabase/migrations/202609290005_gaming_diary.sql` after the library migration. Open `/diary` or use **Log a play session** on a game page. Choose a game, calendar date, duration (1–1,440 minutes), notes, and optional completion/replay markers. Sessions support editing, confirmed deletion, game/month filters, and a paginated timeline. Dates remain exactly as selected without timezone conversion; the new-session form defaults to the browser's local date.
+
+`/stats?year=2026` shows monthly logged hours and completion logs for the selected year, with session/replay totals. Completion counts are session markers, including repeat finishes, not unique completed games. Editing or deleting a session recalculates trends from the source rows. Diary time is separate from Steam snapshots, and diary actions never change library status or public activity. Row-level security limits every operation to the signed-in owner. Stable create IDs make retries safe after a lost response. Run `npm run test:diary` for date, API and database privacy checks.
+
 ### Steam library import
 
 1. Add `STEAM_WEB_API_KEY` to `.env.local` and restart the app. Obtain the key from [Steam Web API registration](https://steamcommunity.com/dev/apikey); keep it server-side, never in a `NEXT_PUBLIC` variable.

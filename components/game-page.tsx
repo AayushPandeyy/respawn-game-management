@@ -391,6 +391,9 @@ export default function GamePage({
           )}
         </div>
         <aside className="journal-panel" id="your-journal">
+          <Link className="diary-game-link" href={`/diary?game=${game.id}`}>
+            Log a play session ↗
+          </Link>
           <div className="journal-panel-heading">
             <span className="mini-label">YOUR EXPERIENCE</span>
             <h2>Your chapter.</h2>

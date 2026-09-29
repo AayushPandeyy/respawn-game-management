@@ -929,11 +929,12 @@ h3,
   border-right: 1px solid var(--line);
   padding: 33px 22px 0;
   z-index: 20;
+  overflow-y: auto;
 }
 .sidebar-inner {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 39px);
+  min-height: calc(100% - 39px);
   padding-top: 52px;
 }
 .nav-label {

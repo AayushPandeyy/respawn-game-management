@@ -16,6 +16,8 @@ Existing and new Google users use the same button.
    - http://127.0.0.1:3000/auth/callback**
    - https://YOUR_DOMAIN/auth/callback**
    Keep the production hostname explicit. The suffix allows flow and next parameters.
+   If APP_ORIGIN is configured on your hosting provider, set it to the exact
+   HTTPS production origin. Do not leave it as http://127.0.0.1:3000.
 5. Click Continue with Google. Complete consent, then check that you return to the
    intended app page. Also check cancellation, sign-out, and signing in again.
 

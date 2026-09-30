@@ -19,12 +19,20 @@ export async function currentUser(): Promise<User | null> {
   };
 }
 export function requestOrigin(request: Request) {
-  const host = request.headers.get("host");
+  const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim();
+  const host = forwardedHost || request.headers.get("host");
+  const forwardedProtocol = request.headers
+    .get("x-forwarded-proto")
+    ?.split(",")[0]
+    ?.trim();
+  const protocol =
+    forwardedProtocol === "http" || forwardedProtocol === "https"
+      ? forwardedProtocol
+      : new URL(request.url).protocol.replace(":", "");
   return (
-    process.env.APP_ORIGIN?.replace(/\/$/, "") ||
     (host
-      ? `${new URL(request.url).protocol}//${host}`
-      : new URL(request.url).origin)
+      ? `${protocol}://${host}`
+      : process.env.APP_ORIGIN?.replace(/\/$/, "") || new URL(request.url).origin)
   );
 }
 export function sameOrigin(request: Request) {

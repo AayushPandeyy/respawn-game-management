@@ -129,7 +129,7 @@ export function ProfileForm({
           pattern="[a-z0-9_]{3,24}"
           minLength={3}
           maxLength={24}
-          defaultValue={profile?.username}
+          defaultValue={profile?.username || ""}
           placeholder="your_player_name"
         />
         <small>3–24 lowercase letters, numbers or underscores.</small>

@@ -10,7 +10,7 @@ export default async function Page({
   const params = await searchParams;
   const query =
     typeof params.q === "string"
-      ? params.q.slice(0, 24).replace(/[^a-z0-9_]/gi, "")
+      ? params.q.slice(0, 24).replace(/[^a-z0-9_ ]/gi, "").trim()
       : "";
   const page = Math.min(4000, Math.max(1, parseInt(params.page || "1") || 1));
   let content;
@@ -19,9 +19,12 @@ export default async function Page({
     let q = c
       .from("profiles")
       .select("*")
-      .order("username")
+      .order("display_name")
       .range((page - 1) * 24, page * 24);
-    if (query) q = q.ilike("username", `%${query.replace(/_/g, "\\_")}%`);
+    if (query) {
+      const safe = query.replace(/_/g, "\\_");
+      q = q.or(`username.ilike.%${safe}%,display_name.ilike.%${safe}%`);
+    }
     const { data, error } = await q;
     check(error);
     const players = (data || []) as Profile[];
@@ -31,14 +34,14 @@ export default async function Page({
           {players.slice(0, 24).map((p) => (
             <Link
               className="community-card player-card"
-              href={`/u/${p.username}`}
+              href={p.username ? `/u/${p.username}` : `/u/id/${p.user_id}`}
               key={p.user_id}
             >
               <span className="profile-avatar" style={{ background: p.color }}>
                 {p.display_name.slice(0, 2).toUpperCase()}
               </span>
               <h2>{p.display_name}</h2>
-              <small>@{p.username}</small>
+              <small>{p.username ? `@${p.username}` : "New player"}</small>
               <p>{p.bio || "Ready for the next adventure."}</p>
               <span>View player ↗</span>
             </Link>
@@ -47,7 +50,7 @@ export default async function Page({
         {!players.length && (
           <div className="community-card">
             <h2>No players found.</h2>
-            <p>Try another username, or create your own public profile.</p>
+            <p>Try another name or username.</p>
             <Link href="/profile">Set up your profile ↗</Link>
           </div>
         )}
@@ -75,14 +78,14 @@ export default async function Page({
       description="Discover players, visit their profiles, and follow the perspectives you enjoy."
     >
       <form className="player-search" action="/players">
-        <label htmlFor="player-query">Search usernames</label>
+        <label htmlFor="player-query">Search players</label>
         <div>
           <input
             id="player-query"
             name="q"
             maxLength={24}
             defaultValue={query}
-            placeholder="Find a player…"
+            placeholder="Search by name or username…"
           />
           <button className="community-button">Search</button>
         </div>

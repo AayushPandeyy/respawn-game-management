@@ -6,7 +6,7 @@ import SteamImporter from "@/components/steam-importer";
 export const dynamic = "force-dynamic";
 export default async function Page() {
   const user = await currentUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/login?next=/import/steam");
   const savedGames: number[] = [];
   const savedApps: number[] = [];
   let minutes = 0;

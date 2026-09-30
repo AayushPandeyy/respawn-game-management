@@ -1,6 +1,14 @@
 import Link from "next/link";
 import type { Review } from "@/lib/community";
-export default function ReviewCards({ items }: { items: Review[] }) {
+import { engagement, type Engagement } from "@/lib/discussions";
+import { ReviewActions } from "./review-interactions";
+export default async function ReviewCards({ items }: { items: Review[] }) {
+  let summaries: Engagement[] = [];
+  try {
+    summaries = await engagement(items);
+  } catch {
+    /* Reviews remain readable during a discussion outage. */
+  }
   return (
     <div className="review-feed">
       {!items.length && (
@@ -50,6 +58,13 @@ export default function ReviewCards({ items }: { items: Review[] }) {
               timeZone: "UTC",
             })}
           </small>
+          <ReviewActions
+            reviewer={r.user_id}
+            gameId={r.game_id}
+            initial={summaries.find(
+              (s) => s.review_user_id === r.user_id && s.game_id === r.game_id,
+            )}
+          />
         </article>
       ))}
     </div>

@@ -86,42 +86,54 @@ export async function games(
   search = "",
   genre = "",
 ): Promise<{ games: Game[]; offline: boolean }> {
+  const query = search.trim().slice(0, 100);
   try {
     const params = new URLSearchParams({
       key: process.env.RAWG_API_KEY || "",
       page_size: "24",
-      ordering: "-added",
     });
-    if (search) params.set("search", search.slice(0, 100));
-    else
+    if (query) params.set("search", query);
+    else {
+      params.set("ordering", "-added");
       params.set(
         "dates",
         "2020-01-01," + new Date().toISOString().slice(0, 10),
       );
-    if (genre) params.set("genres", genre);
-    const res = await fetch(`https://api.rawg.io/api/games?${params}`, {
-      next: { revalidate: 3600 },
-      signal: AbortSignal.timeout(9000),
-    });
+    }
+    if (genre && !query) params.set("genres", genre);
+    const res = await fetch(`https://api.rawg.io/api/games?${params}`, query
+      ? { cache: "no-store", signal: AbortSignal.timeout(9000) }
+      : { next: { revalidate: 3600 }, signal: AbortSignal.timeout(9000) });
     if (!res.ok) throw new Error("RAWG unavailable");
     const data = await res.json();
+    const found = data.results.map((g: Game) => ({
+      id: g.id,
+      name: g.name,
+      background_image: g.background_image,
+      rating: g.rating,
+      released: g.released,
+      genres: g.genres,
+      metacritic: g.metacritic,
+    }));
+    const normalized = query.toLocaleLowerCase();
+    // RAWG relevance can vary by ordering. Keep exact and title-prefix matches visible first.
+    if (normalized)
+      found.sort((a: Game, b: Game) => {
+        const score = (game: Game) => {
+          const name = game.name.toLocaleLowerCase();
+          return name === normalized ? 0 : name.startsWith(normalized) ? 1 : 2;
+        };
+        return score(a) - score(b);
+      });
     return {
-      games: data.results.map((g: Game) => ({
-        id: g.id,
-        name: g.name,
-        background_image: g.background_image,
-        rating: g.rating,
-        released: g.released,
-        genres: g.genres,
-        metacritic: g.metacritic,
-      })),
+      games: found,
       offline: false,
     };
   } catch {
     return {
       games: (fallback as Game[]).filter(
         (g) =>
-          (!search || g.name.toLowerCase().includes(search.toLowerCase())) &&
+          (!query || g.name.toLowerCase().includes(query.toLowerCase())) &&
           (!genre || g.genres.some((x) => x.slug === genre)),
       ),
       offline: true,

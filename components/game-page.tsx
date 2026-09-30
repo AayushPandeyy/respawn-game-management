@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  ArrowLeft,
   ArrowUpRight,
   Bookmark,
   Check,
@@ -17,6 +16,7 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import AppSidebar from "./app-sidebar";
 import Brand from "./brand";
 import type { Entry, GameDetails, User } from "@/lib/types";
 
@@ -153,27 +153,8 @@ export default function GamePage({
       })
     : "To be announced";
   return (
-    <div className="game-page">
-      <header className="game-header">
-        <Brand />
-        <Link href="/" className="back-discover">
-          <ArrowLeft size={16} /> Discover games
-        </Link>
-        <div className="game-header-account">
-          {user ? (
-            <>
-              <span className="avatar">
-                {user.name.slice(0, 1).toUpperCase()}
-              </span>
-              <span>{user.name}</span>
-            </>
-          ) : (
-            <Link href="/login" className="primary">
-              Log in <ArrowUpRight size={16} />
-            </Link>
-          )}
-        </div>
-      </header>
+    <div className="game-page with-app-sidebar">
+      <AppSidebar user={user} entries={entry ? [entry] : []} />
       <section className="game-hero">
         {game.background_image && (
           <img className="game-hero-image" src={game.background_image} alt="" />

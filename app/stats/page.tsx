@@ -11,7 +11,7 @@ export default async function Page({
   searchParams: Promise<{ year?: string }>;
 }) {
   const user = await currentUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/login?next=/stats");
   const params = await searchParams;
   const year = Math.max(
     1970,

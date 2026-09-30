@@ -10,7 +10,7 @@ export async function currentUser(): Promise<User | null> {
     error,
   } = await supabase.auth.getUser();
   if (error || !user) return null;
-  const name = user.user_metadata?.name;
+  const name = user.user_metadata?.name || user.user_metadata?.full_name;
   return {
     id: user.id,
     email: user.email || "",

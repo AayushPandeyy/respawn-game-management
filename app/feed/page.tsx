@@ -23,7 +23,7 @@ export default async function Page({
   searchParams: Promise<{ page?: string }>;
 }) {
   const user = await currentUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/login?next=/feed");
   const params = await searchParams;
   const page = Math.min(5001, Math.max(1, parseInt(params.page || "1") || 1));
   let content;

@@ -38,6 +38,12 @@ Restart after changing environment values. Rebuild production when NEXT_PUBLIC v
 
 ## Connected features
 
+### Review likes, comments and notifications
+
+Run `supabase/migrations/202609290006_review_discussions.sql` after the community migration. Public review cards show like/comment counts and open a paginated discussion at `/reviews/[reviewer]/[gameId]`. Signed-in users can like/unlike; commenting requires a public profile. Authors may edit or delete their own comments, with spoiler content collapsed by default. Each new comment by someone else creates an in-app notification for the reviewer at `/notifications`. This is an inbox, not email or push notifications; refresh to load new activity. Reading states are stored privately in Supabase. Comment previews are excluded from notifications to avoid leaking spoilers.
+
+Database policies enforce ownership; immutable comment author/target columns and restricted notification grants prevent spoofing. The notification trigger derives its recipient from the referenced review. Retrying a comment with its original ID does not duplicate comments or notifications. Deleting a comment removes its notification; unpublishing a review removes its comments and likes. Run `npm run test:discussions` for privacy, identity, retry and cascade checks.
+
 ### Private gaming diary
 
 Run `supabase/migrations/202609290005_gaming_diary.sql` after the library migration. Open `/diary` or use **Log a play session** on a game page. Choose a game, calendar date, duration (1–1,440 minutes), notes, and optional completion/replay markers. Sessions support editing, confirmed deletion, game/month filters, and a paginated timeline. Dates remain exactly as selected without timezone conversion; the new-session form defaults to the browser's local date.

@@ -1,24 +1,46 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap");
+.password-page { min-height:100dvh; padding:40px 20px; display:flex; flex-direction:column; align-items:center; gap:48px; }
+.google-signin { width:100%; display:flex; align-items:center; justify-content:center; gap:12px; padding:14px 18px; border:1px solid #747775; border-radius:8px; background:#fff; color:#1f1f1f; font-size:14px; font-weight:600; }
+.google-signin:hover:not(:disabled) { background:#f2f2f2; }
+.google-signin:disabled { opacity:.55; cursor:not-allowed; }
+.google-signin:focus-visible { outline:2px solid var(--green); outline-offset:4px; }
+.password-page .auth-form-wrap { width:100%; max-width:480px; }
+.password-page h1 { margin-top:16px; font-size:30px; }
+.password-page .text-link { display:inline-block; margin-top:22px; }
+.achievement-summary { display:flex; align-items:center; gap:24px; margin-bottom:28px; }
+.achievement-summary > svg { flex-shrink:0; color:var(--green); }
+.achievement-summary small, .achievement-category { color:var(--green); font-size:11px; letter-spacing:1px; }
+.achievement-summary h2 { margin:8px 0; }
+.achievement-summary p { color:var(--muted); line-height:1.6; }
+.achievement-summary > strong { margin-left:auto; color:var(--green); font-size:40px; white-space:nowrap; }
+.achievement-summary > strong span { display:block; color:var(--muted); font-size:12px; font-weight:400; }
+.achievement-filters { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:24px; }
+.achievement-filters .active { color:#17210e; background:var(--green); }
+.achievement-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+.achievement-card { display:flex; flex-direction:column; min-width:0; }
+.achievement-card.is-earned { border-color:#789e4055; background:linear-gradient(145deg,#23301c,#151a13); }
+.achievement-card-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:22px; }
+.achievement-card-top > small { color:var(--muted); font-size:10px; letter-spacing:1px; }
+.achievement-emblem { display:grid; place-items:center; width:50px; height:50px; border-radius:15px; background:#ffffff08; color:var(--muted); }
+.is-earned .achievement-emblem { color:var(--green); background:#c3f66b16; }
+.achievement-card h2 { font-size:20px; margin:10px 0; }
+.achievement-card > p { font-size:14px; margin-bottom:24px; flex:1; }
+.achievement-progress { display:flex; justify-content:space-between; gap:12px; font-size:12px; color:var(--muted); }
+.achievement-progress b { color:var(--text); font-weight:500; }
+.achievement-card progress { appearance:none; border:0; width:100%; height:6px; margin:12px 0 16px; border-radius:9px; overflow:hidden; background:#ffffff10; }
+.achievement-card progress::-webkit-progress-bar { background:#ffffff10; }
+.achievement-card progress::-webkit-progress-value { background:var(--green); border-radius:9px; }
+.achievement-card progress::-moz-progress-bar { background:var(--green); }
+.achievement-status { display:flex; align-items:center; gap:6px; color:var(--muted); font-size:11px; }
+.is-earned .achievement-status { color:var(--green); }
+.achievement-footnote { color:var(--muted); font-size:12px; line-height:1.7; margin-top:28px; }
+@media(max-width:1200px) { .achievement-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:750px) { .achievement-grid { grid-template-columns:1fr; } .achievement-summary { flex-wrap:wrap; } .achievement-summary > strong { margin-left:0; } }
 .community-shell {
   min-height: 100vh;
+  margin-left: 280px;
   background: radial-gradient(ellipse at 90% 0%, #25321d66, transparent 45%);
 }
-.community-shell > header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 28px;
-  padding: 28px 5%;
-  border-bottom: 1px solid var(--line);
-}
-.community-shell nav {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-  font-size: 14px;
-  color: var(--muted);
-}
-.community-shell nav a:hover,
 .game-community a:hover {
   color: var(--green);
 }
@@ -364,15 +386,6 @@
   display: none;
 }
 @media (max-width: 800px) {
-  .community-shell > header {
-    align-items: start;
-    flex-direction: column;
-    padding: 22px;
-  }
-  .community-shell nav {
-    gap: 18px;
-    font-size: 13px;
-  }
   .community-shell main {
     padding: 38px 20px 70px;
   }
@@ -420,6 +433,103 @@
   --green: #c3f66b;
   --font: "DM Sans", Arial, sans-serif;
   color-scheme: dark;
+}
+.review-interactions {
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+  margin-top: 22px;
+}
+.review-interactions > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.review-interactions button,
+.review-interactions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  padding: 0;
+  color: var(--muted);
+}
+.review-interactions [aria-pressed="true"] {
+  color: var(--green);
+}
+.review-interactions > p {
+  font-size: 12px;
+  color: #ffb58a;
+  line-height: 1.6;
+}
+.discussion-thread {
+  max-width: 850px;
+  margin: auto;
+}
+.discussion-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 36px 0 22px;
+}
+.discussion-heading h2 {
+  font: 700 23px Manrope;
+  margin: 0;
+}
+.discussion-heading > span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.comment-composer {
+  max-width: none;
+}
+.comment-card {
+  scroll-margin-top: 24px;
+}
+.comment-card > .comment-composer {
+  padding: 0;
+  border: 0;
+  margin-bottom: 20px;
+}
+.comment-card summary {
+  cursor: pointer;
+  color: var(--green);
+  font-size: 13px;
+  margin: 18px 0;
+}
+.notification-card h2 {
+  margin-top: 20px;
+}
+.notification-unread {
+  border-left: 3px solid var(--green);
+}
+.notification-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-top: 22px;
+  color: var(--green);
+  font-size: 13px;
+}
+.notification-read {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 0;
+}
+.notification-actions [role="alert"] {
+  color: #ffb58a;
+  font-size: 12px;
+}
+@media (max-width: 600px) {
+  .discussion-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+  .notification-actions {
+    flex-wrap: wrap;
+  }
 }
 .diary-layout {
   display: grid;
@@ -1207,10 +1317,10 @@ h3,
 .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
-  width: 222px;
+  width: 280px;
   background: #151815;
   border-right: 1px solid var(--line);
-  padding: 33px 22px 0;
+  padding: 33px 24px 0;
   z-index: 20;
   overflow-y: auto;
 }
@@ -1273,7 +1383,8 @@ h3,
   margin-top: 30px;
   padding: 25px 11px 0;
 }
-.sidebar-collection > div {
+.sidebar-collection > div,
+.sidebar-collection > a {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1286,6 +1397,12 @@ h3,
   font-size: 12px;
   font-weight: 500;
   color: #677161;
+}
+.sidebar-collection > a {
+  margin: 20px 0;
+}
+.sidebar-collection > a:hover {
+  color: var(--green);
 }
 .sidebar-note {
   margin-top: auto;
@@ -1357,7 +1474,11 @@ h3,
   color: #899580;
 }
 .main-shell {
-  margin-left: 222px;
+  margin-left: 280px;
+  transition: margin-left 0.2s ease;
+}
+.with-app-sidebar {
+  margin-left: 280px;
 }
 .topbar {
   height: 93px;
@@ -1380,6 +1501,24 @@ h3,
   display: flex;
   align-items: center;
   gap: 24px;
+}
+.topbar-notifications {
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+}
+.topbar-notifications:hover {
+  color: var(--green);
+  border-color: #4b5742;
+  background: #b6ff6430;
+}
+.topbar-profile {
+  text-decoration: none;
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+.topbar-profile:hover {
+  box-shadow: 0 0 0 3px #b6ff6440;
+  transform: translateY(-1px);
 }
 .search {
   height: 38px;
@@ -2255,12 +2394,16 @@ h3,
 }
 @media (max-width: 1200px) {
   .sidebar {
-    width: 198px;
+    width: 240px;
     padding-left: 17px;
     padding-right: 17px;
   }
   .main-shell {
-    margin-left: 198px;
+    margin-left: 240px;
+  }
+  .community-shell,
+  .with-app-sidebar {
+    margin-left: 240px;
   }
   .topbar {
     padding: 0 28px;
@@ -2314,6 +2457,10 @@ h3,
     padding-right: 14px;
   }
   .main-shell {
+    margin-left: 180px;
+  }
+  .community-shell,
+  .with-app-sidebar {
     margin-left: 180px;
   }
   .sidebar .brand {
@@ -2425,6 +2572,10 @@ h3,
     display: none;
   }
   .main-shell {
+    margin-left: 0;
+  }
+  .community-shell,
+  .with-app-sidebar {
     margin-left: 0;
   }
   .topbar {

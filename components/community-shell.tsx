@@ -1,6 +1,8 @@
-import Link from "next/link";
-import Brand from "./brand";
-export default function CommunityShell({
+import AppSidebar from "./app-sidebar";
+import { currentUser } from "@/lib/auth";
+import { getEntries } from "@/lib/library";
+import type { Entry } from "@/lib/types";
+export default async function CommunityShell({
   eyebrow,
   title,
   description,
@@ -11,21 +13,12 @@ export default function CommunityShell({
   description: string;
   children: React.ReactNode;
 }) {
+  const user = await currentUser();
+  let entries: Entry[] = [];
+  if (user) try { entries = await getEntries(user.id); } catch {}
   return (
     <div className="community-shell">
-      <header>
-        <Brand />
-        <nav aria-label="Community navigation">
-          <Link href="/">Discover</Link>
-          <Link href="/feed">Activity</Link>
-          <Link href="/diary">Diary</Link>
-          <Link href="/players">Players</Link>
-          <Link href="/reviews">Reviews</Link>
-          <Link href="/lists">Lists</Link>
-          <Link href="/stats">Statistics</Link>
-          <Link href="/profile">My profile</Link>
-        </nav>
-      </header>
+      <AppSidebar user={user} entries={entries} />
       <main>
         <div className="community-heading">
           <span>{eyebrow}</span>

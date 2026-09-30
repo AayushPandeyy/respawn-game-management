@@ -7,7 +7,7 @@ import { ListForm } from "@/components/community-forms";
 export const dynamic = "force-dynamic";
 export default async function Page() {
   const user = await currentUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/login?next=/lists");
   let content;
   try {
     const items = await lists(user.id);

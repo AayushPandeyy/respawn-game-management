@@ -19,6 +19,12 @@ import {
   X,
   LoaderCircle,
   SlidersHorizontal,
+  Bell,
+  Users,
+  List,
+  BarChart3,
+  Trophy,
+  Radio,
 } from "lucide-react";
 import Brand from "./brand";
 import type { Entry, Game, User } from "@/lib/types";
@@ -50,6 +56,15 @@ export default function Dashboard({
   const [genre, setGenre] = useState("");
   const [shelfFilter, setShelfFilter] = useState("all");
   const [sort, setSort] = useState("default");
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const requestedView = params.get("view");
+    const requestedShelf = params.get("shelf");
+    if (["discover", "library", "journal"].includes(requestedView || ""))
+      setView(requestedView!);
+    if (["all", "playing", "completed", "wishlist"].includes(requestedShelf || ""))
+      setShelfFilter(requestedShelf!);
+  }, []);
   useEffect(() => setSaved(entries), [entries]);
   const [loading, setLoading] = useState(false);
   const [cached, setCached] = useState(offline);
@@ -170,26 +185,33 @@ export default function Dashboard({
         <div className="sidebar-inner">
           <span className="nav-label">YOUR CORNER OF THE GAME WORLD</span>
           <nav>
-            <Link className="nav-item" href="/diary">
-              Gaming diary
+            <Link className="nav-item" href="/diary" title="Gaming diary">
+              <NotebookPen size={19} />
+              <span>Gaming diary</span>
             </Link>
-            <Link className="nav-item" href="/feed">
-              Activity feed
+            <Link className="nav-item" href="/feed" title="Activity feed">
+              <Radio size={19} />
+              <span>Activity feed</span>
             </Link>
-            <Link className="nav-item" href="/players">
-              Find players
+            <Link className="nav-item" href="/players" title="Find players">
+              <Users size={19} />
+              <span>Find players</span>
             </Link>
-            <Link className="nav-item" href="/profile">
-              My profile
+            <Link className="nav-item" href="/reviews" title="Public reviews">
+              <Star size={19} />
+              <span>Public reviews</span>
             </Link>
-            <Link className="nav-item" href="/reviews">
-              Public reviews
+            <Link className="nav-item" href="/lists" title="Custom lists">
+              <List size={19} />
+              <span>Custom lists</span>
             </Link>
-            <Link className="nav-item" href="/lists">
-              Custom lists
+            <Link className="nav-item" href="/stats" title="Statistics">
+              <BarChart3 size={19} />
+              <span>Statistics</span>
             </Link>
-            <Link className="nav-item" href="/stats">
-              Statistics
+            <Link className="nav-item" href="/achievements" title="Achievements">
+              <Trophy size={19} />
+              <span>Achievements</span>
             </Link>
             {[
               ["discover", "Discover", Compass],
@@ -321,7 +343,10 @@ export default function Dashboard({
                 aria-label="Search games"
                 placeholder="Find your next game…"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  if (e.target.value.trim()) setGenre("");
+                }}
               />
               {search && (
                 <button
@@ -335,9 +360,22 @@ export default function Dashboard({
             </label>
             {user ? (
               <>
-                <div className="avatar">
+                <Link
+                  className="topbar-notifications icon-button"
+                  href="/notifications"
+                  aria-label="Notifications"
+                  title="Notifications"
+                >
+                  <Bell size={18} />
+                </Link>
+                <Link
+                  className="avatar topbar-profile"
+                  href="/profile"
+                  aria-label="Open your profile"
+                  title="My profile"
+                >
                   {user.name.slice(0, 1).toUpperCase()}
-                </div>
+                </Link>
                 <button
                   className="mobile-logout icon-button"
                   aria-label="Log out"
@@ -366,12 +404,14 @@ export default function Dashboard({
         </header>
         <nav className="community-mobile-links" aria-label="Community">
           <Link href="/feed">Activity</Link>
+          <Link href="/notifications">Notifications</Link>
           <Link href="/diary">Diary</Link>
           <Link href="/players">Players</Link>
           <Link href="/profile">Profile</Link>
           <Link href="/reviews">Reviews</Link>
           <Link href="/lists">Lists</Link>
           <Link href="/stats">Statistics</Link>
+          <Link href="/achievements">Achievements</Link>
         </nav>
         <nav className="mobile-nav">
           {["discover", "library", "journal"].map((v) => (

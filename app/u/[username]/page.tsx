@@ -69,7 +69,7 @@ export default async function Page({
   if (!p) notFound();
   return (
     <Shell
-      eyebrow={`@${p.username}`}
+      eyebrow={p.username ? `@${p.username}` : "PLAYER PROFILE"}
       title={p.display_name}
       description={p.bio || "Always ready for the next adventure."}
     >

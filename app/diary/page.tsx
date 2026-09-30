@@ -12,7 +12,7 @@ export default async function Page({
   searchParams: Promise<{ page?: string; game?: string; month?: string }>;
 }) {
   const user = await currentUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/login?next=/diary");
   const p = await searchParams;
   const page = Math.max(1, Math.min(5000, Number.parseInt(p.page || "1") || 1));
   const gameId =

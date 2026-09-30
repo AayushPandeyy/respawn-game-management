@@ -2,7 +2,7 @@ import "server-only";
 import { createClient } from "./supabase/server";
 export type Profile = {
   user_id: string;
-  username: string;
+  username: string | null;
   display_name: string;
   bio: string;
   color: string;

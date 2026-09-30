@@ -12,7 +12,9 @@
     "test:community": "node --experimental-vm-modules --test tests/community.test.mjs",
     "test:follows": "node --experimental-vm-modules --test tests/follows.test.mjs",
     "test:steam": "node --experimental-vm-modules --test tests/steam.test.mjs",
-    "test:diary": "node --experimental-vm-modules --test tests/diary.test.mjs"
+    "test:diary": "node --experimental-vm-modules --test tests/diary.test.mjs",
+    "test:discussions": "node --experimental-vm-modules --test tests/discussions.test.mjs",
+    "test:rawg-search": "node --experimental-vm-modules --test tests/rawg-search.test.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
